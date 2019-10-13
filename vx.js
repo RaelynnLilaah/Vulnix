@@ -62,9 +62,11 @@ if (message.content.toLowerCase().startsWith(prefix + `new`)) {
         message.channel.send(`:white_check_mark: Your ticket has been created, #${c.name}.`);
         const embed = new Discord.RichEmbed()
         .setColor(0xCF40FA)
-        .addField(`Hey ${message.author.username}!`, `Please try explain why you opened this ticket with as much detail as possible. Our **Support Team** will be here soon to help.`)
-        .setTimestamp();
-        c.send({ embed: embed });
+        .setAuthor(message.author.username, message.author.displayAvatarURL)
+        .addDescription(`Please try explain why you opened this ticket with as much detail as possible. Our **Support Team** will be here soon to help.`)
+        .setTimestamp()
+        .setFooter(client.user.username + " Tickets", client.user.displayAvatarURL);
+        c.send(embed);
     }).catch(console.error);
 }
 if (message.content.toLowerCase().startsWith(prefix + `close`)) {
@@ -78,7 +80,8 @@ if (message.content.toLowerCase().startsWith(prefix + `close`)) {
         errors: ['time'],
       })
       .then((collected) => {
-          message.channel.delete();
+          message.channel.delete("Ticket Closed.");
+          console.log(message.guild.name + " ticket system, the ticket ticket-" + message.author.username.toLowerCase() + " has been deleted.")
         })
         .catch(() => {
           m.edit('Ticket close timed out, the ticket was not closed.').then(m2 => {
